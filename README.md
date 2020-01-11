@@ -107,4 +107,17 @@ Below is the gist of how to instantiate and update SORT. See the ['__main__'](ht
     # track_bbs_ids is a np array where each row contains a valid bounding box and track_id (last column)
     ...
     
- 
+### How depreciation problem was solved
+
+The existing code was 
+```python
+from sklearn.utils.linear_assignment_ import linear_assignment
+matched_indices = linear_assignment(-iou_matrix)
+```
+
+This was replaced with
+```python
+from scipy.optimize import linear_sum_assignment
+all_ind = linear_sum_assignment(-iou_matrix)
+matched_indices = np.transpose(np.asarray(all_ind,dtype='int32'))
+```
